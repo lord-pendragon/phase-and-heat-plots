@@ -3,7 +3,7 @@ setlocal
 
 :menu
 echo.
-echo 1. Run hello_world.py
+echo 1. Run PhasePlots with Angle Lines
 echo 2. Run tests
 echo 3. Simulations Menu
 echo 4. Clear screen
@@ -12,7 +12,7 @@ echo.
 
 set /p choice="Enter your choice: "
 
-if "%choice%"=="1" goto run_hello
+if "%choice%"=="1" goto run_phaseplots_with_angle_lines
 if "%choice%"=="2" goto run_tests
 if "%choice%"=="3" goto simulations
 if "%choice%"=="4" goto clear_screen_menu
@@ -50,9 +50,9 @@ python run_Planar.py
 cd ..
 goto menu
 
-:run_hello
+:run_phaseplots_with_angle_lines
 echo Running Program...
-python src\hello_world.py
+python src\PhasePlottingAngleLines.py
 goto menu
 
 :run_tests
