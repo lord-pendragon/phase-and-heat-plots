@@ -1,5 +1,6 @@
 import cmath
 import math
+import numpy as np
 
 # Math and complex math related libraries
 
@@ -26,15 +27,13 @@ s2p = sph2pln
 # returns X,Y and Z coordinate of the point on the unit sphere respectively
     
 def sphX(u, v):
-
-    return math.sqrt(1 - math.cos(v) ** 2) * math.cos(u)
+    return np.sqrt(1 - np.cos(v) ** 2) * np.cos(u)
 
 def sphY(u, v):
-
-    return math.sqrt(1 - math.cos(v) ** 2) * math.sin(u)
+    return np.sqrt(1 - np.cos(v) ** 2) * np.sin(u)
 
 def sphZ(u, v):
-    return math.cos(v)
+    return np.cos(v)
 
 # Polar to spherical transformation
 def pol2sph(u, v):
