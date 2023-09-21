@@ -1,7 +1,8 @@
 numpy
-matplotlib.pyplot
-mpl_toolkits.mplot3d
+matplotlib
+mpl_toolkits
 cmath
 math
 unittest
 sys
+scipy
