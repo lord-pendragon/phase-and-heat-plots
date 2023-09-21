@@ -66,13 +66,3 @@ def arg(Z):
     if ans < 0:
         ans += pi_2
     return ans
-
-# Testing the functions
-print("Test sph2pln:", sph2pln(1, 2, 3))
-print("Test s2p:", s2p(1, 2, 3))
-print("Test sphX:", sphX(1, 2))
-print("Test sphY:", sphY(1, 2))
-print("Test sphZ:", sphZ(1, 2))
-print("Test pol2sph:", pol2sph(1, 2))
-print("Test T:", T(1, 2))
-print("Test arg:", arg(1 + 2j))
