@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 from mpl_toolkits.mplot3d import Axes3D
+from Support import plot
+
 
 L, R, T, B = -3, 3, 3, -3
 gridside = 500
@@ -34,39 +36,39 @@ def arglines(t):
 
 # TODO: NumericEventHanlders need to be implemented here
 
+inp = input("Please select type of Visualization:\n1 = Normal\n2 = Flat\n3 = With Rings\n4 = Zeta\n5 = All\nO = Exit\n")
+
+if inp != '0':
 # Populate A and C
-for n in range(gridside + 1):
-    x = n * (R - L) / gridside + L
-    for m in range(gridside + 1):
-        y = m * (T - B) / gridside + B
-        image = f(x + y * 1j)  # 1j is the imaginary unit in Python
-        A[n, m] = abs(image)
-        
-        ARG = cmath.phase(image)
-        if ARG < 0:
-            ARG += 2 * np.pi
+    for n in range(gridside + 1):
+        x = n * (R - L) / gridside + L
+        for m in range(gridside + 1):
+            y = m * (T - B) / gridside + B
+            image = f(x + y * 1j)  # 1j is the imaginary unit in Python
+            A[n, m] = abs(image)
             
-        C[n, m, 0] = ARG / (2 * np.pi)
-        C[n, m, 1] = 1
-        C[n, m, 2] = 1 - 0.25 * (ing(abs(image)) - np.floor(ing(abs(image)))) - 0.25 * (np.ceil(10 * ARG / (2 * np.pi)) - 10 * ARG / (2 * np.pi))
-
-# Convert HSV to RGBA
-C_RGBA = colors.hsv_to_rgb(C)
-
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-# Convert A and C to suitable formats for Matplotlib
-X, Y = np.meshgrid(np.linspace(L, R, gridside + 1), np.linspace(B, T, gridside + 1))
-
-# Plotting the surface plot
-ax.plot_surface(X, Y, A.T, facecolors=C_RGBA)
-
-plt.show()
-
+            ARG = cmath.phase(image)
+            if ARG < 0:
+                ARG += 2 * np.pi
+                
+            C[n, m, 0] = ARG / (2 * np.pi)
+            C[n, m, 1] = 1
+            C[n, m, 2] = 1 - 0.25 * (ing(abs(image)) - np.floor(ing(abs(image)))) - 0.25 * (np.ceil(10 * ARG / (2 * np.pi)) - 10 * ARG / (2 * np.pi))
 
 # TODO: Implement Flat version below this line
 
-# TODO: Put rings
+if inp == '2' or inp == '5':
+    for n in range(gridside + 1):
+        for m in range(gridside + 1):
+            A[n, m] = -1
 
-# TODO: Implement the Zeta Plotting, gridside = 500
+elif inp == '3' or inp == '5':
+    print('Plotting Rings\n')
+    # TODO: Put rings
+
+elif inp == '4' or inp == '5':
+    print('Plotting Zeta')
+    # TODO: Implement the Zeta Plotting, gridside = 500
+
+if inp != '0':
+    plot(C,L,R,gridside,B,T,A)

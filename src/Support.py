@@ -1,6 +1,8 @@
 import cmath
 import math
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import colors
 
 # Math and complex math related libraries
 
@@ -65,3 +67,18 @@ def arg(Z):
     if ans < 0:
         ans += pi_2
     return ans
+
+def plot(C, L, R, gridside, B, T, A):
+    
+    C_RGBA = colors.hsv_to_rgb(C)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Convert A and C to suitable formats for Matplotlib
+    X, Y = np.meshgrid(np.linspace(L, R, gridside + 1), np.linspace(B, T, gridside + 1))
+
+    # Plotting the surface plot
+    ax.plot_surface(X, Y, A.T, facecolors=C_RGBA)
+
+    plt.show()
