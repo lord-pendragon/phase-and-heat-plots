@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.special import zeta  # Importing the Zeta function from SciPy
+from scipy.ndimage import gaussian_filter
 from Support import plot, sphX, sphY, sphZ, sph2pln, pol2sph
 
 
@@ -131,6 +132,22 @@ for n in range(gridside+1):
         C[n, m, 2] = 1 - 0.25 * (ing(abs(image)) - np.floor(ing(abs(image)))) - 0.25 * (np.ceil(10 * ARG / (2 * np.pi)) - 10 * ARG / (2 * np.pi))
 
 C_RGBA = colors.hsv_to_rgb(C)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Use the slices of A as the X, Y, Z values
+X = A[:,:,0]
+Y = A[:,:,1]
+Z = A[:,:,2]
+
+# Plotting the surface plot
+ax.plot_surface(X, Y, Z, facecolors=C_RGBA)
+
+plt.show()
+
+smoothed_C = gaussian_filter(C, sigma=1)
+
+C_RGBA = colors.hsv_to_rgb(smoothed_C)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
