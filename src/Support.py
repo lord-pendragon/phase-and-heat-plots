@@ -17,8 +17,11 @@ def sph2pln(x, y, z):
     # Transforms Cartesian unit sphere coordinates to Cartesian plane coordinates.
     # Parameters are X,Y and Z coordinates on the unit sphere
     # returns a tuple containing the transformed coordinates (X, Y)
+    if z == 1:
+        return 0, 0 # Check if results in division by zero, in which case return 0
     
-    return x / (1 - z), y / (1 - z)
+    else:
+        return x / (1 - z), y / (1 - z)
 
 # Alias for sph2pln
 s2p = sph2pln
