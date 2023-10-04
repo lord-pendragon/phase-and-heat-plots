@@ -55,16 +55,31 @@ if inp != '0':
             C[n, m, 1] = 1
             C[n, m, 2] = 1 - 0.25 * (ing(abs(image)) - np.floor(ing(abs(image)))) - 0.25 * (np.ceil(10 * ARG / (2 * np.pi)) - 10 * ARG / (2 * np.pi))
 
-# TODO: Implement Flat version below this line
+# Flat Version
 
 if inp == '2' or inp == '5':
     for n in range(gridside + 1):
         for m in range(gridside + 1):
             A[n, m] = -1
 
+# With Rings
+
 elif inp == '3' or inp == '5':
-    print('Plotting Rings\n')
-    # TODO: Put rings
+    center = 0
+    r1 = 1
+    r2 = 2
+    linewidth = abs(R - L) / 100  # You had a syntax error in your Maple code for this
+    for n in range(gridside + 1):
+        x = n * (R - L) / gridside + L
+        for m in range(gridside + 1):
+            y = m * (T - B) / gridside + B
+            distance_to_center = abs(complex(x, y) - center)
+
+            if (r1 - linewidth <= distance_to_center <= r1 + linewidth) or (r2 - linewidth <= distance_to_center <= r2 + linewidth):
+                C[n, m, 0] = 0
+                C[n, m, 1] = 0
+                C[n, m, 2] = 0
+
 
 elif inp == '4' or inp == '5':
     print('Plotting Zeta')
