@@ -1,15 +1,15 @@
 import cmath
-import math
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
+
 # Math and complex math related libraries
 
 # Constants for pi
-pi_1 = math.pi  # Equivalent to `1*Pi` in Maple
-pi_2 = 2 * math.pi  # Equivalent to `2*Pi` in Maple
-pi_half = math.pi / 2  # Equivalent to `Pi/2` in Maple
+pi_1 = np.pi  # Equivalent to `1*Pi` in Maple
+pi_2 = 2 * np.pi  # Equivalent to `2*Pi` in Maple
+pi_half = np.pi / 2  # Equivalent to `Pi/2` in Maple
 
 # Cartesian unit sphere to Cartesian plane transformation
 def sph2pln(x, y, z):
@@ -70,6 +70,7 @@ def arg(Z):
     if ans < 0:
         ans += pi_2
     return ans
+
 
 def plot(C, L, R, gridside, B, T, A):
     
