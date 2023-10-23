@@ -55,5 +55,3 @@ def heatplot_reverse(inf, pa1, pa2):
     ax.set_zlabel('Z-axis')
 
     plt.show()
-
-# Example usage:

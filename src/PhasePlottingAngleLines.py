@@ -13,8 +13,6 @@ gridside = 500
 A = np.zeros((gridside+1, gridside+1), dtype=np.float64)
 
 def f(z):
-    # TODO: Implement support for Laurent function
-    # TODO: Implement Maple Sum function here
 
     if z == 1 or z == 2:
         return 0 # Handle instances of division by zero
@@ -41,11 +39,6 @@ def arglines(t):
     # arglines := t -> 1:
     # arglines := t -> 1- 0.6*`(ceil(anglemarks*t) - anglemarks*t)^10
 
-# TODO: NumericEventHanlders need to be implemented here
-
-# inp = input("Please select type of Visualization:\n1 = Normal\n2 = Flat\n3 = With Rings\n4 = Zeta\n5 = All\nO = Exit\n")
-
-# if inp != '0':
 # Populate A and C
 for n in range(gridside + 1):
     x = n * (R - L) / gridside + L
@@ -74,11 +67,10 @@ for n in range(gridside + 1):
 plot(C,L,R,gridside,B,T,A)
 # With Rings
 
-# elif inp == '3' or inp == '5':
 center = 0
 r1 = 1
 r2 = 2
-linewidth = abs(R - L) / 100  # You had a syntax error in your Maple code for this
+linewidth = abs(R - L) / 100 
 for n in range(gridside + 1):
     x = n * (R - L) / gridside + L
     for m in range(gridside + 1):
@@ -92,13 +84,9 @@ for n in range(gridside + 1):
 
 plot(C,L,R,gridside,B,T,A)
 
-# elif inp == '4' or inp == '5':
-    # print('Plotting Zeta')
-    # TODO: Implement the Zeta Plotting, gridside = 500
-
 gridside = int(input('Enter Gridsize for Sphere:\n'))
 
-A = np.zeros((gridside+1, gridside+1, 3), dtype=np.float64)  # Similar to your A definition, but now with an extra dimension for the 3 values
+A = np.zeros((gridside+1, gridside+1, 3), dtype=np.float64)  
 C = np.zeros((gridside+1, gridside+1, 3), dtype=np.float64)  # HSV color space
 
 
@@ -135,12 +123,10 @@ C_RGBA = colors.hsv_to_rgb(C)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-# Use the slices of A as the X, Y, Z values
 X = A[:,:,0]
 Y = A[:,:,1]
 Z = A[:,:,2]
 
-# Plotting the surface plot
 ax.plot_surface(X, Y, Z, facecolors=C_RGBA)
 
 plt.show()
@@ -151,17 +137,10 @@ C_RGBA = colors.hsv_to_rgb(smoothed_C)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-# Use the slices of A as the X, Y, Z values
 X = A[:,:,0]
 Y = A[:,:,1]
 Z = A[:,:,2]
 
-# Plotting the surface plot
 ax.plot_surface(X, Y, Z, facecolors=C_RGBA)
 
 plt.show()
-
-
-
-# if inp != '0' and inp != '4':
-    # plot(C,L,R,gridside,B,T,A)

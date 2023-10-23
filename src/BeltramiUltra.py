@@ -17,7 +17,7 @@ def BeltramiUltra(inf, Conjugated=False):
     if Conjugated:
         Y = -Y
     
-    T_X, T_Y = X, Y  # Transformation function T can be applied here
+    T_X, T_Y = X, Y 
     Z_value = f(T_X + 1j * T_Y)
     
     Z_real = np.abs(Z_value)

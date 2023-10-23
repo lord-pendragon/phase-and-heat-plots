@@ -6,7 +6,6 @@ def planar(inf, pa1, pa2):
     def f(p):
         return np.vectorize(inf)(p)
     
-    # Extracting the parameter ranges
     if isinstance(pa1, tuple):
         rngx = pa1
     else:
@@ -21,7 +20,7 @@ def planar(inf, pa1, pa2):
     x = np.linspace(rngx[0], rngx[1], 50)
     y = np.linspace(rngy[0], rngy[1], 50)
     X, Y = np.meshgrid(x, y)
-    Z = np.ones_like(X)  # Since Z is always 1 in this case
+    Z = np.ones_like(X)
     
     # Color function
     def color_func(x, y):
@@ -39,7 +38,6 @@ def planarTest(inf, pa1, pa2):
     def f(p):
         return np.vectorize(inf)(p)
     
-    # Extracting the parameter ranges
     if isinstance(pa1, tuple):
         rngx = pa1
     else:
@@ -50,10 +48,9 @@ def planarTest(inf, pa1, pa2):
     else:
         rngy = (pa2, pa2)
     
-    # Generate 3D data
     x = np.linspace(rngx[0], rngx[1], 50)
     y = np.linspace(rngy[0], rngy[1], 50)
     X, Y = np.meshgrid(x, y)
-    Z = np.ones_like(X)  # Since Z is always 1 in this case
+    Z = np.ones_like(X)
 
     return X, Y, Z

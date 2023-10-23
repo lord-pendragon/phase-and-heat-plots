@@ -72,5 +72,3 @@ def Heatplot(inf, pa1, pa2, numpoints=100, axes=None, scaling='auto', view=None,
         ax.view_init(elev=view[0], azim=view[1])
         
     plt.show()
-
-# Example usage
