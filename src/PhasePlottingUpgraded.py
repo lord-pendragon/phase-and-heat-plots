@@ -1,51 +1,154 @@
-import cmath
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import colors
+from Support import arg, sph2pln, sphX, sphY, sphZ, pol2sph, plot, pi_2
 from matplotlib import colors
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.special import zeta  # Importing the Zeta function from SciPy
 from scipy.ndimage import gaussian_filter
-from Support import arg, plot, sphX, sphY, sphZ, sph2pln, pol2sph
 
+
+
+# Initialization
+L, R, T, B = -10, 10, 10, -10
+gridside = 500
+count = 0
+satmarks = 10
+
+# Initialize arrays A and C
+A = np.zeros((gridside+1, gridside+1), dtype=np.float64)
+C = np.zeros((gridside+1, gridside+1, 3), dtype=np.float64)
+
+def f(z):
+    try:
+        f = (z - 5)**2 * (z + 5)**5
+        # f = 1 / ((2 - z) * (1 - z))
+        return f
+    except ZeroDivisionError:
+        return 0
+
+def arglines(t):
+    anglemarks = 10
+    return 1 if 0.50 <= np.ceil(anglemarks * t) - anglemarks * t else 1 + (-1) * 0.45 * (np.ceil(anglemarks * t) - anglemarks * t) / 0.5
+
+def ing(z):
+    return z if z <= 1 else np.log(z + np.exp(1) - 1)
+
+def saturation(t, satmarks):
+    return 1 - 0.6 * (np.ceil(satmarks * t) - satmarks * t)**10
+
+# Loop over the grid
+for n in range(gridside + 1):
+    if gridside + L == 0:
+        x = 0
+    else:
+        # x = n * (R - L) / gridside + L
+        x = ((n / gridside) * (R - L)) + L
+    for m in range(gridside + 1):
+        if gridside + B == 0:
+            y = 0
+        else:
+            # y = m * (T - B) / gridside + B
+            y = ((m / gridside) * (T - B)) + B
+        image = f(complex(x, y))
+        A[n, m] = np.abs(image)
+
+        if np.imag(image) < 0:
+            ARG = pi_2 + arg(image)
+        else:
+            ARG = arg(image)
+
+        
+        H = ARG / pi_2
+        S = saturation(ARG / pi_2, satmarks)
+        V = 1 - 0.6 * (ing(np.abs(image)) - np.floor(ing(np.abs(image))))
+
+        while H > 1:
+            H = H - 1
+        if H < 0:
+            H = H * -1
+        else:
+            C[n, m, 0] = H
+        
+        while S > 1:
+            S = S - 1
+        if S < 0:
+            S = S * -1
+        else:
+            C[n, m, 1] = S
+            
+        while V > 1:
+            V = V - 1
+        if V < 0:
+            V = V * -1
+        else:
+            C[n, m, 2] = V
+
+# Plotting
+plot(C, L, R, gridside, B, T, A)
+# Resetting A for the next plot
+A[:, :] = -1
+plot(C, L, R, gridside, B, T, A)
+
+gridside = 500
+A = np.zeros((gridside+1, gridside+1), dtype=np.float64)
+C = np.zeros((gridside+1, gridside+1, 3), dtype=np.float64)
+
+for n in range(gridside + 1):
+    u = 2 * np.pi * n / gridside
+    for m in range(gridside + 1):
+        v = np.pi * m / gridside
+
+        x, y, z = pol2sph(u, v)
+        X, Y = sph2pln(x, y, z)
+        image = f(X + 1j * Y)
+
+        A[n, m, :] = [x, y, z]
+
+        if np.imag(image) < 0:
+            ARG = pi_2 + np.angle(image)
+        else:
+            ARG = np.angle(image)
+
+        H = ARG / pi_2
+        S = saturation(ARG / pi_2, satmarks)
+        V = 1 - 0.6 * (ing(np.abs(image)) - np.floor(ing(np.abs(image))))
+
+        while H > 1:
+            H = H - 1
+        if H < 0:
+            H = H * -1
+        else:
+            C[n, m, 0] = H
+        
+        while S > 1:
+            S = S - 1
+        if S < 0:
+            S = S * -1
+        else:
+            C[n, m, 1] = S
+            
+        while V > 1:
+            V = V - 1
+        if V < 0:
+            V = V * -1
+        else:
+            C[n, m, 2] = V
+
+
+C_RGBA = colors.hsv_to_rgb(C)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(A[:,:,0], A[:,:,1], A[:,:,2], facecolors=C_RGBA, rstride=5, cstride=5)
+plt.show()
+
+
+############ With Angle Lines ###############
 
 L, R, T, B = -3, 3, 3, -3
 gridside = 500
 A = np.zeros((gridside+1, gridside+1), dtype=np.float64)
 
-def f(z):
-    # TODO: Implement support for Laurent function
-    # TODO: Implement Maple Sum function here
-
-    if z == 1 or z == 2:
-        return 0 # Handle instances of division by zero
-    
-    else:
-        return 1 / ((2 - z) * (1 - z))
-    # laurent(1/((2 - z)*(1 - z)), z = 1);
-    # f := z -> Sum((1 - (1/2)^(k + 1))*z^k, k = 0 .. 40);
-    # f := z -> Sum(-z^(-k), k = 1 .. 40) + Sum(-z^k/2^(k + 1), k = 0 .. 40);
-    # f := z -> Sum((2^(k - 1) - 1)*z^(-k), k = 1 .. 40);
-    # f := z -> 1/((2 - z)*(1 - z));
-
-# COLORING
-
-C = np.zeros((gridside + 1, gridside + 1, 3), dtype=np.float64)
-
-def ing(z):
-    return z if z <= 1 else np.log(z + np.exp(1) - 1)
-    # ing := z->z;
-
-def arglines(t):
-    anglemarks = 10
-    return 1 if 0.50 <= np.ceil(anglemarks * t) - anglemarks * t else 1 + (-1) * 0.45 * (np.ceil(anglemarks * t) - anglemarks * t) / 0.5
-    # arglines := t -> 1:
-    # arglines := t -> 1- 0.6*`(ceil(anglemarks*t) - anglemarks*t)^10
-
-# TODO: NumericEventHanlders need to be implemented here
-
-# inp = input("Please select type of Visualization:\n1 = Normal\n2 = Flat\n3 = With Rings\n4 = Zeta\n5 = All\nO = Exit\n")
-
-# if inp != '0':
 # Populate A and C
 for n in range(gridside + 1):
     x = n * (R - L) / gridside + L
@@ -92,12 +195,7 @@ for n in range(gridside + 1):
 
 plot(C,L,R,gridside,B,T,A)
 
-# elif inp == '4' or inp == '5':
-    # print('Plotting Zeta')
-    # TODO: Implement the Zeta Plotting, gridside = 500
-
-gridside = int(input('Enter Gridsize for Sphere:\n'))
-
+gridside = 500
 A = np.zeros((gridside+1, gridside+1, 3), dtype=np.float64)  # Similar to your A definition, but now with an extra dimension for the 3 values
 C = np.zeros((gridside+1, gridside+1, 3), dtype=np.float64)  # HSV color space
 
@@ -162,6 +260,3 @@ ax.plot_surface(X, Y, Z, facecolors=C_RGBA)
 plt.show()
 
 
-
-# if inp != '0' and inp != '4':
-    # plot(C,L,R,gridside,B,T,A)
