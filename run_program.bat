@@ -3,7 +3,7 @@ setlocal
 
 :menu
 echo.
-echo 1. Run PhasePlots with Angle Lines
+echo 1. Run Code
 echo 2. Run tests
 echo 3. Simulations Menu
 echo 4. Clear screen
@@ -52,7 +52,7 @@ goto menu
 
 :run_phaseplots_with_angle_lines
 echo Running Program...
-python src\PhasePlottingAngleLines.py
+python src\PhasePlottingUpgraded.py
 goto menu
 
 :run_tests
