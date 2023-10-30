@@ -2,8 +2,6 @@ import cmath
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
-
-
 # Math and complex math related libraries
 
 # Constants for pi
@@ -20,6 +18,9 @@ def sph2pln(x, y, z):
     if z == 1:
         return 0, 0 # Check if results in division by zero, in which case return 0
     
+    if 1 - z == 0:  # Add this check for division by zero
+        return 0, 0
+
     else:
         return x / (1 - z), y / (1 - z)
 
@@ -82,7 +83,6 @@ def plot(C, L, R, gridside, B, T, A):
     # Convert A and C to suitable formats for Matplotlib
     X, Y = np.meshgrid(np.linspace(L, R, gridside + 1), np.linspace(B, T, gridside + 1))
 
-    # Plotting the surface plot
     ax.plot_surface(X, Y, A.T, facecolors=C_RGBA)
 
     plt.show()

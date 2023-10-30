@@ -7,10 +7,18 @@ from scipy.special import zeta  # Importing the Zeta function from SciPy
 from scipy.ndimage import gaussian_filter
 from Support import arg, plot, sphX, sphY, sphZ, sph2pln, pol2sph
 
+# Implementing safe Zeta function call
+def safe_zeta(x):
+    try:
+        return zeta(x)
+    except:
+        return 0  # return 0 if any exception occurs
 
 L, R, T, B = -3, 3, 3, -3
 gridside = 500
-A = np.zeros((gridside+1, gridside+1), dtype=np.float64)
+
+# Change this line to create a 3D array for A
+A = np.zeros((gridside+1, gridside+1, 3), dtype=np.float64)
 
 def f(z):
 
@@ -31,13 +39,10 @@ C = np.zeros((gridside + 1, gridside + 1, 3), dtype=np.float64)
 
 def ing(z):
     return z if z <= 1 else np.log(z + np.exp(1) - 1)
-    # ing := z->z;
 
 def arglines(t):
     anglemarks = 10
     return 1 if 0.50 <= np.ceil(anglemarks * t) - anglemarks * t else 1 + (-1) * 0.45 * (np.ceil(anglemarks * t) - anglemarks * t) / 0.5
-    # arglines := t -> 1:
-    # arglines := t -> 1- 0.6*`(ceil(anglemarks*t) - anglemarks*t)^10
 
 # Populate A and C
 for n in range(gridside + 1):
